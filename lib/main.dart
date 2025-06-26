@@ -4,11 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/core/controller/theme_controller.dart';
 import 'package:prettyrini/feature/common_page/ui/health_ui.dart';
+import 'package:prettyrini/feature/doctor_details/ui/doctor_details_page.dart';
 import 'package:prettyrini/feature/homepage/ui/home_page.dart';
 import 'package:prettyrini/feature/medication_page/ui/medication_notification.dart';
 import 'package:prettyrini/feature/medication_page/ui/medication_page.dart';
 import 'package:prettyrini/feature/splash_screen/screen/splash_screen.dart';
-import 'package:prettyrini/feature/tips/ui/tips_ui.dart';
+import 'package:prettyrini/feature/common_booking/ui/common_booking_ui.dart';
 import 'package:prettyrini/feature/weekly_reports/ui/weekly_reports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/const/app_colors.dart';
@@ -63,8 +64,9 @@ class MyApp extends StatelessWidget {
         // home: HealthCardsScreen(),
         //    home: MedicationPage(),
         // home: MedicineReminderPage(),
-        //   home: TipsUi(),
-        home: WeeklyReportsPage(),
+        //    home: CommonStatusUi(),
+        // home: WeeklyReportsPage(),
+        home: DoctorDetailsPage(),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/heart_rate_page/model/health_card_model.dart';
+import 'package:prettyrini/feature/common_page/model/health_card_model.dart';
 
 class HealthController extends GetxController {
   // Observable list of health cards
@@ -108,5 +108,45 @@ class HealthController extends GetxController {
   // Refresh data
   void refreshData() {
     loadHealthCards();
+  }
+
+  // calender
+
+  var selectedDate = DateTime.now().obs;
+  var currentMonth = DateTime.now().obs;
+  var heartRate = 120.obs;
+  var measurementTime = "08:00am".obs;
+
+  List<DateTime> get monthDates {
+    final firstDay =
+        DateTime(currentMonth.value.year, currentMonth.value.month, 1);
+    final lastDay =
+        DateTime(currentMonth.value.year, currentMonth.value.month + 1, 0);
+
+    List<DateTime> dates = [];
+    for (int i = 0; i < lastDay.day; i++) {
+      dates.add(firstDay.add(Duration(days: i)));
+    }
+    return dates;
+  }
+
+  void selectDate(DateTime date) {
+    selectedDate.value = date;
+    // Here you can add logic to fetch heart rate data for selected date
+    // For demo purposes, we'll just update with random values
+    heartRate.value = 115 + (date.day % 20);
+    measurementTime.value =
+        "${8 + (date.day % 4)}:${(date.day % 6) * 10}${date.day % 2 == 0 ? 'am' : 'pm'}";
+  }
+
+  void changeMonth(int monthOffset) {
+    currentMonth.value = DateTime(
+        currentMonth.value.year, currentMonth.value.month + monthOffset, 1);
+
+    // If selected date is not in current month, select first day of new month
+    if (selectedDate.value.month != currentMonth.value.month ||
+        selectedDate.value.year != currentMonth.value.year) {
+      selectDate(currentMonth.value);
+    }
   }
 }

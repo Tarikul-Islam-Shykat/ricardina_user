@@ -10,6 +10,8 @@ import 'package:prettyrini/feature/medication_page/ui/medication_notification.da
 import 'package:prettyrini/feature/medication_page/ui/medication_page.dart';
 import 'package:prettyrini/feature/splash_screen/screen/splash_screen.dart';
 import 'package:prettyrini/feature/common_booking/ui/common_booking_ui.dart';
+import 'package:prettyrini/feature/tips/ui/basic_plan/ui/basic_plan_tips.dart';
+import 'package:prettyrini/feature/tips/ui/intermediate_plan/ui/intermediate_tips_ui.dart';
 import 'package:prettyrini/feature/weekly_reports/ui/weekly_reports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/const/app_colors.dart';
@@ -61,12 +63,14 @@ class MyApp extends StatelessWidget {
         // home: ProfileScreen(),
         //   home: EditProfile(),
         //  home : ChangePassoword()
-        // home: HealthCardsScreen(),
+        //  home: HealthCardsScreen(),
         //    home: MedicationPage(),
         // home: MedicineReminderPage(),
         //    home: CommonStatusUi(),
         // home: WeeklyReportsPage(),
-        home: DoctorDetailsPage(),
+        // home: DoctorDetailsPage(),
+        //  home: BasicPlanTips(),
+        home: IntermediateTipsUi(),
       ),
     );
   }

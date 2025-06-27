@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:prettyrini/core/const/app_colors.dart';
 import 'package:prettyrini/feature/common_page/controller/health_controller.dart';
 import 'package:prettyrini/feature/common_page/model/health_card_model.dart';
+import 'package:prettyrini/feature/tips/tips_details_ui.dart';
 
 class HealthCardWidget extends StatelessWidget {
   final HealthCard card;
@@ -186,14 +187,16 @@ class HealthCardWidget extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(16),
                   onTap: () {
+                    Get.to(TipsDetailsUi(), arguments: card);
+
                     // Handle card tap
-                    Get.snackbar(
-                      'Card Tapped',
-                      card.title,
-                      backgroundColor: controller.getTypeColor(card.type),
-                      colorText: Colors.white,
-                      duration: const Duration(seconds: 2),
-                    );
+                    // Get.snackbar(
+                    //   'Card Tapped',
+                    //   card.title,
+                    //   backgroundColor: controller.getTypeColor(card.type),
+                    //   colorText: Colors.white,
+                    //   duration: const Duration(seconds: 2),
+                    // );
                   },
                   child: Container(),
                 ),

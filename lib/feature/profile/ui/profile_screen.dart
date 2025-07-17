@@ -3,8 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/const/image_path.dart';
+import 'package:prettyrini/feature/appointment_history/ui/appointment_history_page.dart';
+import 'package:prettyrini/feature/booking_page/ui/booking_page.dart';
+import 'package:prettyrini/feature/booking_summary/ui/booking_summary_screen.dart';
+import 'package:prettyrini/feature/checkout_page/ui/checkout_ui.dart';
+import 'package:prettyrini/feature/order_summary/ui/order_summary_ui.dart';
 import 'package:prettyrini/feature/profile/widget/profile_image_text.dart';
 import 'package:prettyrini/feature/profile/widget/profile_list_tile.dart';
+import 'package:prettyrini/feature/weekly_reports/ui/weekly_reports.dart';
 import 'package:prettyrini/route/route.dart';
 
 import '../../../core/const/app_colors.dart';
@@ -127,6 +133,54 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  profileListTile(
+                    Icons.book,
+                    'Intermediate Weekly Reports',
+                    () {
+                      Get.to(WeeklyReportsPage());
+                    },
+                  ),
+                  Divider(color: Colors.grey.shade300),
+                  profileListTile(
+                    Icons.book,
+                    'Booking Summary Reports',
+                    () {
+                      Get.to(BookingSummaryScreen());
+                    },
+                  ),
+                  Divider(color: Colors.grey.shade300),
+                  profileListTile(
+                    Icons.book,
+                    'Booking Summary History',
+                    () {
+                      Get.to(HospitalBookingScreen());
+                    },
+                  ),
+                  Divider(color: Colors.grey.shade300),
+                  profileListTile(
+                    Icons.book,
+                    'Checkout Screen',
+                    () {
+                      Get.to(CheckoutScreen());
+                    },
+                  ),
+                  Divider(color: Colors.grey.shade300),
+                  profileListTile(
+                    Icons.book,
+                    'Order Summary Reports',
+                    () {
+                      Get.to(OrderSummaryUi());
+                    },
+                  ),
+                  Divider(color: Colors.grey.shade300),
+                  profileListTile(
+                    Icons.book,
+                    'Appointment History Page',
+                    () {
+                      Get.to(AppointmentHistoryPage());
+                    },
+                  ),
+                  Divider(color: Colors.grey.shade300),
                   profileListTile(
                     Icons.book,
                     'About Us',

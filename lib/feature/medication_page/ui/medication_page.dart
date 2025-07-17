@@ -5,6 +5,7 @@ import 'package:prettyrini/core/const/app_colors.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/common_page/controller/health_controller.dart';
 import 'package:prettyrini/feature/common_page/widget/health_rate_card.dart';
+import 'package:prettyrini/feature/medication_page/ui/medication_notification.dart';
 
 import 'package:prettyrini/feature/medication_page/widget/bottom_sheet_page.dart';
 
@@ -34,10 +35,26 @@ class _HealthCardsScreenState extends State<MedicationPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 60),
+            const SizedBox(height: 20),
             headingText(text: "Medications"),
-
-            // Date selector
+            GestureDetector(
+              onTap: () {
+                Get.to(MedicineReminderPage());
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: normalText(text: "See Successs Screen"),
+                ),
+              ),
+            ),
+            // Container(
+            //   decoration: BoxDecoration(color: AppColors.primaryColor,)),
+            //   child: normalText(text: "SuccessScreen"),
+            // ),
             Obx(
               () => Container(
                   height: 100,

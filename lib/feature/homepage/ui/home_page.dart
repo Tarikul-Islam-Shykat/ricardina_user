@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:prettyrini/core/const/app_colors.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/common_page/controller/health_controller.dart';
+import 'package:prettyrini/feature/common_page/model/health_card_model.dart';
+import 'package:prettyrini/feature/common_page/ui/health_ui.dart';
 import 'package:prettyrini/feature/common_page/widget/health_rate_card.dart';
 import 'package:prettyrini/feature/common_page/widget/widget_card.dart';
+import 'package:prettyrini/feature/notification/ui/notification_page_ui.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({Key? key}) : super(key: key);
@@ -25,7 +29,14 @@ class _HealthCardsScreenState extends State<HomePageScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 60,
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _buildHeader(),
+            ),
+            SizedBox(
+              height: 2,
             ),
             Obx(
               () => Container(
@@ -130,12 +141,10 @@ class _HealthCardsScreenState extends State<HomePageScreen> {
                   isTimeVisible: false,
                   onTap: () {
                     // Handle card tap - maybe show more details
-                    Get.snackbar(
-                      'Heart Rate Details',
-                      'Heart rate: ${controller.heartRate.value} bpm at ${controller.measurementTime.value}',
-                      backgroundColor: AppColors.primaryColor,
-                      colorText: Colors.white,
-                    );
+                    Get.to(() => HealthCardsScreen(
+                          healthType: HealthType.heart,
+                          heading: "My Heart Health",
+                        ));
                   },
                 )),
                 SizedBox(
@@ -155,12 +164,17 @@ class _HealthCardsScreenState extends State<HomePageScreen> {
                   isTimeVisible: false,
                   onTap: () {
                     // Handle card tap - maybe show more details
-                    Get.snackbar(
-                      'Heart Rate Details',
-                      'Heart rate: ${controller.heartRate.value} bpm at ${controller.measurementTime.value}',
-                      backgroundColor: AppColors.primaryColor,
-                      colorText: Colors.white,
-                    );
+                    Get.to(() => HealthCardsScreen(
+                          healthType: HealthType.blood,
+                          heading: "Blood Pressure Monitor",
+                        ));
+
+                    // Get.snackbar(
+                    //   'Heart Rate Details',
+                    //   'Heart rate: ${controller.heartRate.value} bpm at ${controller.measurementTime.value}',
+                    //   backgroundColor: AppColors.primaryColor,
+                    //   colorText: Colors.white,
+                    // );
                   },
                 )),
                 SizedBox(
@@ -190,12 +204,10 @@ class _HealthCardsScreenState extends State<HomePageScreen> {
                   isTimeVisible: false,
                   onTap: () {
                     // Handle card tap - maybe show more details
-                    Get.snackbar(
-                      'Heart Rate Details',
-                      'Heart rate: ${controller.heartRate.value} bpm at ${controller.measurementTime.value}',
-                      backgroundColor: AppColors.primaryColor,
-                      colorText: Colors.white,
-                    );
+                    Get.to(() => HealthCardsScreen(
+                          heading: "Daily Water Tracker",
+                          healthType: HealthType.water,
+                        ));
                   },
                 )),
                 SizedBox(
@@ -215,12 +227,10 @@ class _HealthCardsScreenState extends State<HomePageScreen> {
                   isTimeVisible: false,
                   onTap: () {
                     // Handle card tap - maybe show more details
-                    Get.snackbar(
-                      'Heart Rate Details',
-                      'Heart rate: ${controller.heartRate.value} bpm at ${controller.measurementTime.value}',
-                      backgroundColor: AppColors.primaryColor,
-                      colorText: Colors.white,
-                    );
+                    Get.to(() => HealthCardsScreen(
+                          healthType: HealthType.step,
+                          heading: "Daily Steps Tracker",
+                        ));
                   },
                 )),
                 SizedBox(
@@ -240,12 +250,10 @@ class _HealthCardsScreenState extends State<HomePageScreen> {
                   isTimeVisible: false,
                   onTap: () {
                     // Handle card tap - maybe show more details
-                    Get.snackbar(
-                      'Heart Rate Details',
-                      'Heart rate: ${controller.heartRate.value} bpm at ${controller.measurementTime.value}',
-                      backgroundColor: AppColors.primaryColor,
-                      colorText: Colors.white,
-                    );
+                    Get.to(() => HealthCardsScreen(
+                          healthType: HealthType.weight,
+                          heading: "My Heart Health",
+                        ));
                   },
                 )),
                 SizedBox(
@@ -307,6 +315,74 @@ class _HealthCardsScreenState extends State<HomePageScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Row(
+      children: [
+        // Profile Image
+        Container(
+          width: 50.w,
+          height: 50.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.r),
+            image: const DecorationImage(
+              image: NetworkImage(
+                  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+
+        SizedBox(width: 12.w),
+
+        // Welcome Text
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              smallText(
+                text: "Welcome back,",
+                color: Colors.grey[600]!,
+              ),
+              SizedBox(height: 2.h),
+              headingText(
+                text: "Darrell Steward",
+                fontWeight: FontWeight.bold,
+              ),
+            ],
+          ),
+        ),
+
+        // Notification Icon
+        GestureDetector(
+          onTap: () {
+            Get.to(NotificationScreen());
+          },
+          child: Container(
+            width: 40.w,
+            height: 40.h,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 0,
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(
+              Icons.notifications_outlined,
+              color: Colors.grey[700],
+              size: 20.sp,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

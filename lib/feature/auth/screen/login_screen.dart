@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
 import 'package:prettyrini/feature/auth/widget/text_field_widget.dart';
+import 'package:prettyrini/feature/user_dashboard/ui/user_dashboard.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
 import '../../../route/route.dart';
@@ -105,7 +106,9 @@ class LoginScreen extends StatelessWidget {
                 height: 30,
               ),
               CustomButton(
-                onTap: () {},
+                onTap: () {
+                  Get.to(UserDashboard());
+                },
                 title: Text(
                   "Log In",
                   style: GoogleFonts.poppins(

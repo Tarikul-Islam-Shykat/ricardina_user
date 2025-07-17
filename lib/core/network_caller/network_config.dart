@@ -18,7 +18,7 @@ class NetworkConfig {
     if (await InternetConnectionChecker().hasConnection) {
       var header = <String, String>{"Content-type": "application/json"};
       if (is_auth == true) {
-        header["Authorization"] = "Bearer ${sh.getString("token")}";
+        header["Authorization"] = "${sh.getString("token")}";
       }
 
       if (method.name == RequestMethod.GET.name) {
@@ -26,7 +26,7 @@ class NetworkConfig {
           var req = await http.get(Uri.parse(url), headers: header);
 
           print(req.statusCode);
-          if (req.statusCode == 200) {
+          if (req.statusCode == 200 || req.statusCode == 201) {
             return json.decode(req.body);
           } else {
             throw Exception("Server Error");
@@ -36,12 +36,13 @@ class NetworkConfig {
         }
       } else if (method.name == RequestMethod.POST.name) {
         try {
-          var req = await http.post(Uri.parse(url),
-              // headers: header,
-              body: json_body);
+          var req =
+              await http.post(Uri.parse(url), headers: header, body: json_body);
 
           print(req.body);
-          if (req.statusCode == 200) {
+          print(req.statusCode);
+
+          if (req.statusCode == 200 || req.statusCode == 201) {
             return json.decode(req.body);
           } else if (req.statusCode == 500) {
             throw Exception("Server Error");

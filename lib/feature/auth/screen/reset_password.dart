@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
+import 'package:prettyrini/feature/auth/controller/reset_password_controller.dart';
 import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
 import 'package:prettyrini/feature/auth/widget/text_field_widget.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
+  ResetPasswordController resetPasswordController =
+      Get.put(ResetPasswordController());
   ResetPasswordScreen({super.key});
 
   final TextEditingController passwordController = TextEditingController();
@@ -16,6 +23,8 @@ class ResetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final email = Get.arguments['email'];
+
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       body: Padding(
@@ -70,20 +79,26 @@ class ResetPasswordScreen extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
               radiusValue2: 15,
               radiusValue: 15,
-              controller: confirmPasswordController,
+              controller: resetPasswordController.confirmPassword,
               hintText: "Confirm Password",
             ),
             Spacer(),
-            CustomButton(
-              onTap: () {},
-              title: Text(
-                "Reset Password",
-                style: GoogleFonts.poppins(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white),
-              ),
-              color: AppColors.primaryColor,
+            Obx(
+              () => resetPasswordController.isResetPassswordLoading.value
+                  ? btnLoading()
+                  : CustomButton(
+                      onTap: () {
+                        resetPasswordController.resetPassword(email);
+                      },
+                      title: Text(
+                        "Reset Password",
+                        style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white),
+                      ),
+                      color: AppColors.primaryColor,
+                    ),
             ),
             SizedBox(
               height: 10.h,

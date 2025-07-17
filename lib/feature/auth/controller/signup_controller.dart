@@ -1,103 +1,77 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
+import 'package:prettyrini/core/network_caller/network_config.dart';
+import 'package:prettyrini/core/services_class/local_data.dart';
+import 'package:prettyrini/feature/auth/screen/otp_very_screen.dart';
 import '../../../core/network_caller/endpoints.dart';
-import '../screen/profile_setup_screen.dart';
 
-class SignInController extends GetxController {
+class SignupController extends GetxController {
   final TextEditingController emailTEController = TextEditingController();
   final TextEditingController passwordTEController = TextEditingController();
-  final TextEditingController conPasswordTEController = TextEditingController();
+  final TextEditingController nameTEController = TextEditingController();
+
   final isPasswordVisible = false.obs;
-  final isConPasswordVisible = false.obs;
   final isLoading = false.obs;
+  String? fcmToken;
+  final NetworkConfig _networkConfig = NetworkConfig();
 
-  void toggleConPasswordVisibility() {
-    isConPasswordVisible.value = !isConPasswordVisible.value;
+  @override
+  void onInit() {
+    super.onInit();
   }
 
-  void togglePasswordVisibility() {
-    isPasswordVisible.value = !isPasswordVisible.value;
-  }
+  final isLoginLoading = false.obs;
 
-  Future<void> handleSignUp() async {
+  Future<bool> signIn() async {
+    isLoginLoading.value = true;
+
     if (emailTEController.text.isEmpty || passwordTEController.text.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Please fill all fields',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return;
-    } else if (passwordTEController.text != conPasswordTEController.text) {
-      Get.snackbar(
-        "Error",
-        "password not match",
-      );
-    } else {
-      try {
-        isLoading.value = true;
-        final response = await http.post(
-          Uri.parse(Urls.signUp),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({
-            'email': emailTEController.text,
-            'password': passwordTEController.text,
-          }),
-        );
+      AppSnackbar.show(message: 'Please fill all fields', isSuccess: false);
+      return false;
+    }
+    try {
+      String email = emailTEController.text;
+      String password = passwordTEController.text;
+      String fullName = nameTEController.text;
 
-        if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
-          final token = data['data']['token'];
-          if (kDebugMode) {
-            print(token);
-          }
-          SharedPreferences pref = await SharedPreferences.getInstance();
-          pref.setString("token", token);
-          pref.setBool("isLogin", true);
-          Get.offAll(() => ProfileSetupScreen());
-          Get.snackbar(
-            'Success',
-            'User Registered successfully!',
-            snackPosition: SnackPosition.TOP,
-          );
-        } else {
-          final data = jsonDecode(response.body);
-          Get.snackbar(
-            'Error',
-            '${data['message']}',
-            snackPosition: SnackPosition.TOP,
-          );
-        }
-      } catch (e) {
-        Get.snackbar(
-          'Error',
-          'Something went wrong',
-          snackPosition: SnackPosition.TOP,
-        );
-      } finally {
-        isLoading.value = false;
+      final Map<String, dynamic> requestBody = {
+        "fullName": fullName,
+        "email": email,
+        "fcmToken": "etgarhstjasthaerhaf",
+        "password": password,
+        "role": "USER"
+      };
+
+      final response = await _networkConfig.ApiRequestHandler(
+        RequestMethod.POST,
+        Urls.signUp,
+        json.encode(requestBody),
+        is_auth: false,
+      );
+      if (response != null && response['success'] == true) {
+        Get.to(OtpVerificationScreen(),
+            arguments: {'email': email, 'isForgetPassword': false});
+
+        //    Get.to(OtpVerificationScreen(), arguments: {'email': email});
+        AppSnackbar.show(message: "Registration Successful", isSuccess: true);
+        return true;
+      } else {
+        AppSnackbar.show(message: response['message'], isSuccess: false);
+        return false;
       }
+    } catch (e) {
+      AppSnackbar.show(message: "Failed To Login $e", isSuccess: false);
+      return false;
+    } finally {
+      isLoginLoading.value = false;
     }
   }
 
-  Future<void> handleGoogleSignUp() async {
-    try {
-      isLoading.value = true;
-      // Implement Google Sign In logic here
-      await Future.delayed(Duration(seconds: 2)); // Simulated API call
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Google sign in failed',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isLoading.value = false;
-    }
+  void setUpValues() {
+    emailTEController.text = "super.admin@gmail.com";
+    passwordTEController.text = "12345678";
   }
 }

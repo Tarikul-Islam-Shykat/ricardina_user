@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
 import '../controller/forget_pasword_controller.dart';
@@ -12,8 +13,8 @@ import '../widget/text_field_widget.dart';
 class ForgetPasswordScreen extends StatelessWidget {
   ForgetPasswordScreen({super.key});
 
-  final ForgetPasswordController controller = Get.put(
-    ForgetPasswordController(),
+  final ForgetPaswordController controller = Get.put(
+    ForgetPaswordController(),
   );
 
   @override
@@ -63,20 +64,24 @@ class ForgetPasswordScreen extends StatelessWidget {
                 keyboardType: TextInputType.emailAddress,
                 radiusValue: 15,
                 radiusValue2: 15,
-                controller: controller.emailController,
+                controller: controller.emailTEController,
                 hintText: 'Enter Email Here',
               ),
               Spacer(),
-              CustomButton(
-                onTap: () {},
-                title: Text(
-                  'Send Email',
-                  style: GoogleFonts.manrope(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                  ),
-                ),
+              Obx(
+                () => controller.isForgetPasswordLoading.value
+                    ? btnLoading()
+                    : CustomButton(
+                        onTap: controller.forgetPassword,
+                        title: Text(
+                          'Send Email',
+                          style: GoogleFonts.manrope(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),

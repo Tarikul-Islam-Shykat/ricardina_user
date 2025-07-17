@@ -4,42 +4,45 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
 import 'package:prettyrini/core/network_caller/network_config.dart';
-import 'package:prettyrini/core/services_class/local_data.dart';
-import 'package:prettyrini/feature/auth/screen/otp_very_screen.dart';
-import 'package:prettyrini/feature/user_dashboard/ui/user_dashboard.dart';
+import 'package:prettyrini/feature/auth/screen/login_screen.dart';
 import '../../../core/network_caller/endpoints.dart';
 
-class ForgetPaswordController extends GetxController {
+class ResetPasswordController extends GetxController {
   final NetworkConfig _networkConfig = NetworkConfig();
-  final TextEditingController emailTEController = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
 
   @override
   void onInit() {
     super.onInit();
   }
 
-  final isForgetPasswordLoading = false.obs;
-  Future<bool> forgetPassword() async {
+  final isResetPassswordLoading = false.obs;
+  Future<bool> resetPassword(String email) async {
     try {
-      isForgetPasswordLoading.value = true;
+      isResetPassswordLoading.value = true;
       final Map<String, dynamic> requestBody = {
-        "email": emailTEController.text
+        "email": email,
+        "password": confirmPassword.text
       };
+
+      log(confirmPassword.text);
+      log(email);
 
       final response = await _networkConfig.ApiRequestHandler(
         RequestMethod.POST,
-        Urls.forgotPass,
+        Urls.resetPassword,
         json.encode(requestBody),
         is_auth: false,
       );
       if (response != null && response['success'] == true) {
-        Get.to(OtpVerificationScreen(), arguments: {
-          'email': emailTEController.text,
-          'isForgetPassword': true
-        });
+        Get.to(LoginScreen());
+        // Get.to(OtpVerificationScreen(), arguments: {
+        //   'email': emailTEController.text,
+        //   'isForgetPassword': true
+        // });
 
         AppSnackbar.show(
-            message: "An OTP was sent to your email", isSuccess: true);
+            message: "Password Changed Successfully", isSuccess: true);
         return true;
       } else {
         AppSnackbar.show(message: response['message'], isSuccess: false);
@@ -49,7 +52,7 @@ class ForgetPaswordController extends GetxController {
       AppSnackbar.show(message: "Failed To Login $e", isSuccess: false);
       return false;
     } finally {
-      isForgetPasswordLoading.value = false;
+      isResetPassswordLoading.value = false;
     }
   }
 }

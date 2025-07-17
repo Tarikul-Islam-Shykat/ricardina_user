@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
+import 'package:prettyrini/feature/auth/screen/sign_up_screen.dart';
 import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
 import 'package:prettyrini/feature/auth/widget/text_field_widget.dart';
 import 'package:prettyrini/feature/user_dashboard/ui/user_dashboard.dart';
@@ -105,19 +107,19 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              CustomButton(
-                onTap: () {
-                  Get.to(UserDashboard());
-                },
-                title: Text(
-                  "Log In",
-                  style: GoogleFonts.poppins(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white),
-                ),
-                color: AppColors.primaryColor,
-              ),
+              Obx(() => controller.isLoginLoading.value
+                  ? btnLoading()
+                  : CustomButton(
+                      onTap: controller.loginUser,
+                      title: Text(
+                        "Log In",
+                        style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white),
+                      ),
+                      color: AppColors.primaryColor,
+                    )),
 
               const Spacer(), // This pushes the button section to the bottom
               Column(
@@ -146,7 +148,12 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       smallText(text: "Don\'t have an account ? "),
-                      smallText(text: "Sign Up", color: AppColors.primaryColor)
+                      GestureDetector(
+                          onTap: () {
+                            Get.to(SignUpScreen());
+                          },
+                          child: smallText(
+                              text: "Sign Up", color: AppColors.primaryColor))
                     ],
                   ),
                   // Center(child: authTerms(context)),
